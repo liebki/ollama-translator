@@ -1,7 +1,11 @@
 # Ollama Translator Plugin
 
 ## Description
-This Spigot Minecraft plugin built with the currently newest Minecraft version 1.20.6 integrates the power of Ollama and Ollama4j to break language barriers within your Minecraft server. Leveraging JDK/Java 21, it provides seamless communication by translating messages from any language to a specified target language. Whether your players speak English, Spanish, or any other language, they can interact effortlessly, fostering a more inclusive and diverse community environment.
+This Spigot Minecraft plugin, built with the currently newest Minecraft version 1.20.6, uses Ollama and Ollama4j to break language barriers on your Minecraft server. Whether players speak English, Spanish, or any other language, they can interact effortlessly, creating a better community and environment.
+
+
+## Java version
+From now on with minecraft 1.20.6 minecraft/spigot etc. use Java 21!
 
 
 ## Features
