@@ -9,10 +9,10 @@ From now on with minecraft 1.20.6 minecraft/spigot etc. use Java 21!
 
 
 ## Features
-- Real-time translation of player messages.
-- Configurable translation settings.
+- Real-time translation of all player messages (longer than five characters).
+- Configurable settings.
 - Easy integration with Ollama API.
-- Support for local hosting of translation models.
+- (ONLY) Support for local hosting of translation models (for now).
 - Quick setup and minimal configuration.
 
 
@@ -47,7 +47,7 @@ ollama:
 
 cooldown:
   enabled: true
-  milliseconds: 2000
+  milliseconds: 1000
   message: §cPlease wait...
 
 translation:
@@ -59,6 +59,7 @@ translation:
 ```
 
 ## Usage
+0. Start ollama and download the model of choice
 1. Install the plugin in your Spigot Minecraft server's plugins directory.
 2. Configure the `options.yml` file according to your preferences.
 3. Restart/Reload the server to apply the changes.
@@ -66,9 +67,10 @@ translation:
 
 
 ## Note
-The bigger the model the better the outcome, mistral showed to be very good but sometimes it is acting weird, llama3:8b (instruct-fp16) was amazing. 
-Please note that LLM/SLM require (a significant amount of) memory, with a minimum of 5-8 GB for small and 15-30 GB for middle-sized models or even more.
-You don't need a 30gb (file size) model if llama3:8b for example produces a good outcome then it is alright, I tested mistral and llama3 so test it yourself.
+- ALL messages (longer than five characters) are translated, also native ones, so this plugin is really only for servers with a mixed-language player-base.
+- The bigger the model the better the outcome, mistral showed to be very good but sometimes it is acting weird, llama3:8b (instruct-fp16) was very good but still not like a native speaker. 
+- Please note that LLM/SLM require (a significant amount of) memory, with a minimum of 5-8 GB for small and 15-30 GB for middle-sized models or even more.
+- You don't need a 30gb (file size) model if llama3:8b for example produces a good outcome then it is alright, I tested mistral and llama3 so test it yourself.
 
 
 ## Disclaimer

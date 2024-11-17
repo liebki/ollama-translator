@@ -1,4 +1,4 @@
-package de.liebki;
+package de.liebki.utils;
 
 public class Pair<A, B> {
 
