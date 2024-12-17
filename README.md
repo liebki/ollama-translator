@@ -72,9 +72,10 @@ translation:
 - Please note that LLM/SLM require (a significant amount of) memory, with a minimum of 5-8 GB for small and 15-30 GB for middle-sized models or even more.
 - You don't need a 30gb (file size) model if llama3:8b for example produces a good outcome then it is alright, I tested mistral and llama3 so test it yourself.
 
+## Todo
+- Implement structured outputs for better translations!
 
 ## Disclaimer
 This plugin is provided as is without any warranty. The developer holds no responsibility for any issues or damages arising from its usage.
-
 
 #### Enjoy breaking down language barriers and creating a more inclusive gaming environment with the Spigot Minecraft Ollama Translator plugin!

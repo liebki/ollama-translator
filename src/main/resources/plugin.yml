@@ -1,9 +1,9 @@
 name: OllamaTranslator
-main: de.liebki.Start
-version: 1.0.1
+main: de.liebki.OllamaTranslator
+version: 0.0.3
 api-version: "1.16"
 commands:
   ollamatranslator:
     description: Shows info message
     usage: /<command>
-    aliases: [ot, translator]
+    aliases: [ ot, translator ]
