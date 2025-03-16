@@ -5,7 +5,7 @@ This Spigot Minecraft plugin, built with the currently newest Minecraft version 
 
 
 ## Java version
-From now on with minecraft 1.20.6 minecraft/spigot etc. use Java 21!
+From now on with minecraft 1.21 minecraft/spigot etc. use Java 21!
 
 
 ## Features
