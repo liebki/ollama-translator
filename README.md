@@ -9,7 +9,8 @@ From now on with minecraft 1.20.6 minecraft/spigot etc. use Java 21!
 
 
 ## Features
-- Real-time translation of all player messages (longer than five characters).
+- "Real-time" translation of all player messages (all messages longer than five characters).
+- All translated messages show the original message when hovering over them.
 - Configurable settings.
 - Easy integration with Ollama API.
 - (ONLY) Support for local hosting of translation models (for now).
@@ -42,7 +43,7 @@ donottouch:
 
 ollama:
   secondstimeout: 20
-  modelname: mistral:instruct
+  modelname: llama3:8b-instruct-q6_K
   apiaddress: http://localhost:11434/
 
 cooldown:
@@ -68,9 +69,9 @@ translation:
 
 ## Note
 - ALL messages (longer than five characters) are translated, also native ones, so this plugin is really only for servers with a mixed-language player-base.
-- The bigger the model the better the outcome, mistral showed to be very good but sometimes it is acting weird, llama3:8b (instruct-fp16) was very good but still not like a native speaker. 
+- The bigger the model the better the outcome, mistral showed to be very good but sometimes it is acting weird, llama3:8b-instruct-q6_K was very good but still not perfect.
 - Please note that LLM/SLM require (a significant amount of) memory, with a minimum of 5-8 GB for small and 15-30 GB for middle-sized models or even more.
-- You don't need a 30gb (file size) model if llama3:8b for example produces a good outcome then it is alright, I tested mistral and llama3 so test it yourself.
+- You don't need a 30gb (file size) model if e.g. llama3:8b-instruct-q6_K produces a good outcome then it is alright, I tested mistral and llama3 so test it yourself.
 
 ## Todo
 - Implement structured outputs for better translations!

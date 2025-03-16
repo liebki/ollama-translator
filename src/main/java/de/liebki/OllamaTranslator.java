@@ -12,6 +12,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
 
 import java.io.File;
 import java.util.HashMap;
@@ -61,19 +64,16 @@ public class OllamaTranslator extends JavaPlugin implements Listener, CommandExe
         try {
             CompletableFuture.supplyAsync(() -> {
                 try {
-
                     String prompt = (TRANSLATOR_PROMPT).replace("%TARGETLANGUAGE%",
                             (String) config.get("translation.targetlanguage"));
 
-                    promptBuilder = new PromptBuilder().addLine(prompt).addLine("``````").addSeparator()
-                            .add(msgContent);
+                    promptBuilder = new PromptBuilder().addLine(prompt).addLine("``````").addSeparator().add(msgContent);
 
                     String model = (String) config.get("ollama.modelname");
-                    OllamaResult response = ollamaAPI.generate(model, promptBuilder.build(),
-                            new OptionsBuilder().build());
+                    OllamaResult response = ollamaAPI.generate(model, promptBuilder.build(), new OptionsBuilder().build());
 
-                    Pair<String, Player> playerAndResponse = new Pair<String, Player>(response.getResponse(), player);
-                    return playerAndResponse;
+                    Triple<String, Player, String> playerResponseAndOriginal = new Triple<>(response.getResponse(), player, msgContent);
+                    return playerResponseAndOriginal;
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -98,20 +98,21 @@ public class OllamaTranslator extends JavaPlugin implements Listener, CommandExe
         return null;
     }
 
-    private void handleResponse(Pair<String, Player> response) {
-        Pair<String, Player> playerAndResponse = response;
-
-        Player receiver = playerAndResponse.getTwo();
-        if (receiver.isOnline()) {
-            String message = playerAndResponse.getOne();
-            String rawAnswerString = (String) config.get("translation.broadcastmessage");
-
-            rawAnswerString = rawAnswerString.replace("%TRANSLATION%", message);
-            rawAnswerString = rawAnswerString.replace("%PLAYER%", receiver.getDisplayName());
-
-            Bukkit.broadcastMessage(MessageUtils.ColorConvert(rawAnswerString));
+    private void handleResponse(Triple<String, Player, String> response) {
+        if (response != null) {
+            Player receiver = response.getTwo();
+            if (receiver.isOnline()) {
+                String translatedMessage = response.getOne();
+                String originalMessage = response.getThree();
+                
+                TextComponent message = new TextComponent(MessageUtils.ColorConvert(receiver.getDisplayName() + " : "));
+                TextComponent translatedText = new TextComponent(MessageUtils.ColorConvert("§b" + translatedMessage));
+                translatedText.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Original: " + originalMessage).create()));
+                
+                message.addExtra(translatedText);
+                Bukkit.spigot().broadcast(message);
+            }
         }
-
     }
 
     private boolean hasCooldown(UUID playerId) {
@@ -138,7 +139,7 @@ public class OllamaTranslator extends JavaPlugin implements Listener, CommandExe
                 config.set("donottouch.configexists", true);
 
                 config.set("ollama.secondstimeout", 20);
-                config.set("ollama.modelname", "mistral:instruct");
+                config.set("ollama.modelname", "llama3:8b-instruct-q6_K");
                 config.set("ollama.apiaddress", "http://localhost:11434/");
 
                 config.set("cooldown.enabled", true);
