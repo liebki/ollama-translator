@@ -1,10 +1,11 @@
 package de.liebki;
 
 import de.liebki.utils.*;
-import io.github.amithkoujalgi.ollama4j.core.OllamaAPI;
-import io.github.amithkoujalgi.ollama4j.core.models.OllamaResult;
-import io.github.amithkoujalgi.ollama4j.core.utils.OptionsBuilder;
-import io.github.amithkoujalgi.ollama4j.core.utils.PromptBuilder;
+import io.github.ollama4j.Ollama;
+import io.github.ollama4j.models.generate.OllamaGenerateRequest;
+import io.github.ollama4j.models.response.OllamaResult;
+import io.github.ollama4j.utils.OptionsBuilder;
+import io.github.ollama4j.utils.PromptBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.entity.Player;
@@ -28,7 +29,7 @@ public class OllamaTranslator extends JavaPlugin implements Listener, CommandExe
     private final String TRANSLATOR_PROMPT = "Translate the user message you get from it's language to %TARGETLANGUAGE% without commenting or mentioning the source of translation. You can correct grammatical errors but dont alter the text too much and dont tell if you changed it. Avoid speaking with the user besides the translation, as everything is for someone else and not you, you focus on translating. Just translate the message, no comment, no code, no formatting just the translation.";
 
     private Config config;
-    private OllamaAPI ollamaAPI;
+    private Ollama ollamaAPI;
     private PromptBuilder promptBuilder;
 
     private final Map<UUID, Long> playersOnCooldown = new HashMap<>();
@@ -64,13 +65,11 @@ public class OllamaTranslator extends JavaPlugin implements Listener, CommandExe
         try {
             CompletableFuture.supplyAsync(() -> {
                 try {
-                    String prompt = (TRANSLATOR_PROMPT).replace("%TARGETLANGUAGE%",
-                            (String) config.get("translation.targetlanguage"));
-
+                    String prompt = (TRANSLATOR_PROMPT).replace("%TARGETLANGUAGE%", (String) config.get("translation.targetlanguage"));
                     promptBuilder = new PromptBuilder().addLine(prompt).addLine("``````").addSeparator().add(msgContent);
 
                     String model = (String) config.get("ollama.modelname");
-                    OllamaResult response = ollamaAPI.generate(model, promptBuilder.build(), new OptionsBuilder().build());
+                    OllamaResult response = ollamaAPI.generate(OllamaGenerateRequest.builder().withModel(model).withPrompt(promptBuilder.build()).build(),null);
 
                     Triple<String, Player, String> playerResponseAndOriginal = new Triple<>(response.getResponse(), player, msgContent);
                     return playerResponseAndOriginal;
@@ -138,8 +137,8 @@ public class OllamaTranslator extends JavaPlugin implements Listener, CommandExe
             if (!config.check("configexists")) {
                 config.set("donottouch.configexists", true);
 
-                config.set("ollama.secondstimeout", 20);
-                config.set("ollama.modelname", "llama3:8b-instruct-q6_K");
+                config.set("ollama.secondstimeout", 30);
+                config.set("ollama.modelname", "granite4:1b-h-q8_0");
                 config.set("ollama.apiaddress", "http://localhost:11434/");
 
                 config.set("cooldown.enabled", true);
@@ -159,7 +158,7 @@ public class OllamaTranslator extends JavaPlugin implements Listener, CommandExe
             config = new Config("plugins/ollamatranslator", "options.yml", this);
         }
 
-        ollamaAPI = new OllamaAPI((String) config.get("ollama.apiaddress"));
+        ollamaAPI = new Ollama((String) config.get("ollama.apiaddress"));
         ollamaAPI.setRequestTimeoutSeconds((Integer) config.get("ollama.secondstimeout"));
 
         getServer().getPluginManager().registerEvents(this, this);

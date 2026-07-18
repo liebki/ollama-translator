@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.liebki</groupId>
 	<artifactId>ollama-translator</artifactId>
-	<version>0.0.4</version>
+	<version>0.0.5</version>
 	<name>ollama-translator</name>
 
 
@@ -24,13 +24,13 @@
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-api</artifactId>
-			<version>1.21-R0.1-20240807.214924-87</version>
+			<version>26.1.2-R0.1-20260616.152059-13</version>
 		</dependency>
 
 		<dependency>
-			<groupId>io.github.amithkoujalgi</groupId>
+			<groupId>io.github.ollama4j</groupId>
 			<artifactId>ollama4j</artifactId>
-			<version>1.0.73</version>
+			<version>1.1.7</version>
 			<scope>compile</scope>
 		</dependency>
 

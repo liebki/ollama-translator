@@ -223,3 +223,6 @@ gradle-app.setting
 # Java heap dump
 *.hprof
 *.prefs
+ollama-translator.iml
+.idea/*
+.vscode/settings.json
